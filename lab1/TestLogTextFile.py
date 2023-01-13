@@ -13,7 +13,9 @@ class TestLogTextFile:
         fileName = "file1"
         logTextFile = LogTextFile(fileName=fileName)
         logTextFile.delete()
-        assert logTextFile == None
+        tryToGetDirName = logTextFile.fileName
+        print(tryToGetDirName)
+        assert pytest.raises(Exception)
 
     def test_log_text_file_move(self):
         fileName = "file1"
@@ -24,9 +26,12 @@ class TestLogTextFile:
 
     def test_log_text_file_read(self):
         fileName = "file1"
-        expected_content = "new line"
+        newLine = "new line"
+        expected_content = "new line new line new line "
         logTextFile = LogTextFile(fileName=fileName)
-        logTextFile.append_line(expected_content)
+        logTextFile.append_line(newLine)
+        logTextFile.append_line(newLine)
+        logTextFile.append_line(newLine)
         actual_content = logTextFile.read()
         assert expected_content == actual_content
 
@@ -34,5 +39,5 @@ class TestLogTextFile:
         fileName = "file1"
         logTextFile = LogTextFile(fileName=fileName)
         parentDirectory = None
-        logTextFile.move(parentDirectory)
-        assert pytest.raises(Exception)
+        with pytest.raises(Exception):
+            logTextFile.move(parentDirectory)

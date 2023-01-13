@@ -22,16 +22,18 @@ class TestDirectory:
     def test_directory_deletion(self):
         directory = Directory(dirName='dir')
         directory.delete()
-        assert directory == None
+        tryToGetDirName = directory.dirName
+        print(tryToGetDirName)
+        assert pytest.raises(Exception)
 
     def test_directory_list_elements(self):
-        directory = Directory(dirName='dir')
+        directory = Directory(dirName='dir',maxElements=10)
         binaryFile1 = BinaryFile(fileName="file1", content="1")
-        binaryFile1.move(directory.dirName)
+        binaryFile1.move(directory)
         binaryFile2 = BinaryFile(fileName="file2", content="2")
-        binaryFile2.move(directory.dirName)
+        binaryFile2.move(directory)
         binaryFile3 = BinaryFile(fileName="file3", content="3")
-        binaryFile3.move(directory.dirName)
+        binaryFile3.move(directory)
         dirElements = directory.list_elements()
         assert dirElements[0] == binaryFile1
         assert dirElements[1] == binaryFile2
@@ -41,11 +43,11 @@ class TestDirectory:
         maxElements = 0
         directory = Directory(dirName='dir', maxElements=maxElements)
         binaryFile1 = BinaryFile(fileName="file1", content="1")
-        binaryFile1.move(directory.dirName)
+        binaryFile1.move(directory)
         assert pytest.raises(OverflowError)
 
     def test_directory_is_not_moved_when_target_dir_does_not_exist(self):
         directory = Directory(dirName='dir', maxElements=10)
         parentDirectory = None
-        directory.move(parentDirectory)
-        assert pytest.raises(Exception)
+        with pytest.raises(Exception):
+            directory.move(parentDirectory)

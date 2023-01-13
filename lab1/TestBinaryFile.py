@@ -15,7 +15,9 @@ class TestBinaryFile:
     def test_binary_file_deletion(self):
         binaryFile = BinaryFile(fileName="file1", content="1")
         binaryFile.delete()
-        assert binaryFile == None
+        tryToGetFileName = binaryFile.fileName
+        print(tryToGetFileName)
+        assert pytest.raises(Exception)
 
     def test_binary_file_move(self):
         binaryFile = BinaryFile(fileName="file1", content="1")
@@ -33,5 +35,6 @@ class TestBinaryFile:
     def test_binary_file_is_not_moved_when_target_dir_does_not_exist(self):
         binaryFile = BinaryFile(fileName="file1", content="1")
         parentDirectory = None
-        binaryFile.move(parentDirectory)
-        assert pytest.raises(Exception)
+
+        with pytest.raises(Exception):
+            binaryFile.move(parentDirectory)

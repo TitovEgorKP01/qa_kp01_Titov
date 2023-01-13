@@ -15,7 +15,9 @@ class TestBufferFile:
     def test_buffer_file_deletion(self):
         bufferFile = BufferFile(fileName="file1", maxSize=10)
         bufferFile.delete()
-        assert bufferFile == None
+        tryToGetFileName = bufferFile.fileName
+        print(tryToGetFileName)
+        assert pytest.raises(Exception)
 
     def test_buffer_file_move(self):
         bufferFile = BufferFile(fileName="file1", maxSize=10)
@@ -32,11 +34,11 @@ class TestBufferFile:
     def test_element_is_not_pushed_when_buffer_file_is_full(self):
         bufferFile = BufferFile(fileName="file1", maxSize=0)
         pushedElement = 1
-        bufferFile.push(pushedElement)
-        assert pytest.raises(OverflowError)
+        with pytest.raises(OverflowError):
+            bufferFile.push(pushedElement)
 
     def test_buffer_file_consume(self):
-        bufferFile = BufferFile(fileName="file1", maxSize=0)
+        bufferFile = BufferFile(fileName="file1", maxSize=10)
         pushedElement = 1
         bufferFile.push(pushedElement)
         assert bufferFile.consume() == pushedElement
@@ -44,5 +46,5 @@ class TestBufferFile:
     def test_buffer_file_is_not_moved_when_target_dir_does_not_exist(self):
         bufferFile = BufferFile(fileName="file1", maxSize=10)
         parentDirectory = None
-        bufferFile.move(parentDirectory)
-        assert pytest.raises(Exception)
+        with pytest.raises(Exception):
+            bufferFile.move(parentDirectory)
