@@ -1,1 +1,0 @@
-# qa_kp01_Titov
