@@ -5,10 +5,15 @@ class BufferFile:
         self.parent = parent
         self.content = []
         self.currentPop_Index = -1
+        self.deleted = False
 
     def delete(self):
-        del self
-        return
+        if self.deleted is False:
+            self.deleted = True
+            del self
+            return {'message': self.fileName + 'file deleted'}
+        else: 
+            return {'error': 'File is already deleted'}
 
     def move(self, path):
         if(path == None):
@@ -25,7 +30,7 @@ class BufferFile:
         self.parent = path
         self.parent.fileList.append(self)
         self.parent.elementsCount += 1
-        return
+        return {'content': self.content}
 
     def push(self, elem):
         if len(self.content) >= self.maxSize:
